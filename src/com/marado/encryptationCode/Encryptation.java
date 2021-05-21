@@ -14,9 +14,10 @@ public class Encryptation {
             if (textChars[i] >= 'a' && textChars[i] <= 'z')
                 charInt[i] = textChars[i] - 96;
             else if (textChars[i] >= 'A' && textChars[i] <= 'Z')
-                charInt[i] = textChars[i] - 64;
-            else if (textChars[i] == ' ')
+                charInt[i] = textChars[i] - 64 + LETTERSONALPHABET;
+            else
                 charInt[i] = 0;
+            System.out.println(charInt[i]);
         }
         charInt[charInt.length - 1] = 0;
         return charInt;
@@ -27,9 +28,12 @@ public class Encryptation {
         int reminder = 0;
         boolean singleNums = false;
         for (int i = 0; i < nums.length - 1; i++){
+            System.out.println(nums[i]);
+            System.out.println(transformedText);
+            System.out.println(reminder+"\n");
             if (nums[i] >= 0 && nums[i] <= 26) {
                 if (nums[i+1] > 0) {
-                    if (Math.ceil(nums[i] + reminder / nums[i + 1]) < 10){
+                    if (Math.ceil((nums[i] + reminder) / nums[i + 1]) < 10){
                         if (!singleNums) {
                             singleNums = true;
                             transformedText += "\\";
@@ -41,12 +45,11 @@ public class Encryptation {
                     }
                     reminder = (nums[i] + reminder) % nums[i + 1];
                 }else {
-                    transformedText += "(" + reminder + ")";
-                    //transformedText += altWinCode(nums[i] + reminder);
+                    transformedText += altWinCode(nums[i] + reminder);
                     reminder = 0;
                 }
             }else if (nums[i] >= 1 + LETTERSONALPHABET && nums[i] <= 26 + LETTERSONALPHABET)
-                if (nums[i] + reminder * nums[i+1] + reminder < 10) {
+                if ((nums[i] + reminder) * nums[i+1] < 10) {
                     if (!singleNums) {
                         singleNums = true;
                         transformedText += "\\";
